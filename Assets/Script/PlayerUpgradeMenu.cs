@@ -7,11 +7,14 @@ public class PlayerUpgradeMenu : MonoBehaviour
     public RectTransform upgradePanel; // The UI panel for upgrades
     public TextMeshProUGUI pointsText; // To display current points
     public Button upgradeAmmoButton; // Button for upgrading ammo
+    public Button upgradeHealthButton; // Button for upgrading health
 
     public PlayerShooting playerShooting; // Reference to PlayerShooting script
+    public PlayerHealth playerHealth; // Reference to PlayerHealth script
 
     private int playerPoints = 0; // Current points of the player
-    private int upgradeCost = 50; // Cost of an ammo upgrade
+    private int ammoUpgradeCost = 50; // Cost of an ammo upgrade
+    private int healthUpgradeCost = 10; // Cost of a health upgrade
 
     private Vector2 hiddenPosition = new Vector2(-407f, 0); // Hidden panel position
     private Vector2 visiblePosition = new Vector2(385.5579f, 0); // Visible panel position
@@ -22,9 +25,12 @@ public class PlayerUpgradeMenu : MonoBehaviour
 
     void Start()
     {
-        // Initialize panel position and set button listener
+        // Initialize panel position and set button listeners
         upgradePanel.anchoredPosition = hiddenPosition;
+
         upgradeAmmoButton.onClick.AddListener(UpgradeAmmo);
+        upgradeHealthButton.onClick.AddListener(UpgradeHealth);
+
         UpdatePointsUI();
     }
 
@@ -44,9 +50,9 @@ public class PlayerUpgradeMenu : MonoBehaviour
 
     void UpgradeAmmo()
     {
-        if (playerPoints >= upgradeCost)
+        if (playerPoints >= ammoUpgradeCost)
         {
-            playerPoints -= upgradeCost;
+            playerPoints -= ammoUpgradeCost;
 
             playerShooting.maxAmmo += 5;
 
@@ -55,7 +61,24 @@ public class PlayerUpgradeMenu : MonoBehaviour
         }
         else
         {
-            Debug.Log("Not enough points for upgrade!");
+            Debug.Log("Not enough points for ammo upgrade!");
+        }
+    }
+
+    void UpgradeHealth()
+    {
+        if (playerPoints >= healthUpgradeCost)
+        {
+            playerPoints -= healthUpgradeCost;
+
+            playerHealth.Heal(10); // Call a healing method in the PlayerHealth script
+
+            Debug.Log("Health upgraded! New health: " + playerHealth.GetCurrentHealth());
+            UpdatePointsUI();
+        }
+        else
+        {
+            Debug.Log("Not enough points for health upgrade!");
         }
     }
 
@@ -87,7 +110,6 @@ public class PlayerUpgradeMenu : MonoBehaviour
 
     void UpdatePointsUI()
     {
-        // Update the points display
         pointsText.text = $"Points: {playerPoints}";
     }
 }

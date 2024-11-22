@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.SceneManagement; // Required for scene management
 
 [System.Serializable]
 public class Wave
@@ -16,6 +17,7 @@ public class EnemySpawner : MonoBehaviour
     public List<Wave> waves = new List<Wave>(); // List of waves
     public TextMeshProUGUI waveText; // UI element to display the current wave
     public TextMeshProUGUI statusText; // UI element to display wave/rest status
+    public int nextSceneIndex; // Index of the scene to load after waves are complete
 
     private int currentWaveIndex = 0; // Current wave index
     private bool isSpawning = false; // Tracks if a wave is currently spawning
@@ -53,6 +55,10 @@ public class EnemySpawner : MonoBehaviour
         Debug.Log("All waves completed!");
         UpdateWaveUI(); // Update UI to indicate waves are completed
         UpdateStatusUI("All Waves Completed!");
+
+        // Change to the next scene after a short delay
+        yield return new WaitForSeconds(3f); // Optional delay before changing scenes
+        SceneManager.LoadScene(nextSceneIndex);
     }
 
     IEnumerator SpawnWave(Wave wave)
@@ -63,7 +69,7 @@ public class EnemySpawner : MonoBehaviour
         for (int i = 0; i < wave.enemyCount; i++)
         {
             SpawnEnemy(wave);
-            yield return new WaitForSeconds(0.5f); // Delay between enemy spawns
+            yield return new WaitForSeconds(1.5f); // Delay between enemy spawns
         }
 
         // Wait until all enemies are destroyed

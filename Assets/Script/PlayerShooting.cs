@@ -18,6 +18,10 @@ public class PlayerShooting : MonoBehaviour
 
     public PlayerUpgradeMenu playerUpgradeMenu; // Reference to the PlayerUpgradeMenu script
 
+    public AudioSource gunAudioSource; // AudioSource for sound effects
+    public AudioClip gunshotClip; // Gunshot sound effect clip
+    public AudioClip reloadClip; // Reload sound effect clip
+
     private int score = 0; // Player's score
 
     void Start()
@@ -58,13 +62,27 @@ public class PlayerShooting : MonoBehaviour
         GameObject bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         rb.AddForce(shootPoint.forward * shootForce, ForceMode.VelocityChange);
+
+        // Play gunshot sound
+        if (gunAudioSource != null && gunshotClip != null)
+        {
+            gunAudioSource.PlayOneShot(gunshotClip);
+        }
     }
 
     System.Collections.IEnumerator Reload()
     {
         isReloading = true;
+
+        // Play reload sound
+        if (gunAudioSource != null && reloadClip != null)
+        {
+            gunAudioSource.PlayOneShot(reloadClip);
+        }
+
         Debug.Log("Reloading...");
         yield return new WaitForSeconds(reloadTime);
+
         currentAmmo = maxAmmo;
         isReloading = false;
         UpdateAmmoUI();

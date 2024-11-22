@@ -59,6 +59,17 @@ public class PlayerHealth : MonoBehaviour
         gameOverPanel.SetActive(true);
     }
 
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        UpdateHealthText();
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
     void UpdateHealthText()
     {
         if (healthText != null)
