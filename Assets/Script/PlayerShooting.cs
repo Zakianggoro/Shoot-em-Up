@@ -12,7 +12,8 @@ public class PlayerShooting : MonoBehaviour
 
     public float shootForce = 10f;
 
-    public TextMeshProUGUI ammoText; // TextMeshPro for ammo display
+    public TextMeshProUGUI currentAmmoText; // TextMeshPro for current ammo display
+    public TextMeshProUGUI maxAmmoText; // TextMeshPro for max ammo display
     public TextMeshProUGUI scoreText; // TextMeshPro for score display
 
     public PlayerUpgradeMenu playerUpgradeMenu; // Reference to the PlayerUpgradeMenu script
@@ -83,9 +84,16 @@ public class PlayerShooting : MonoBehaviour
 
     void UpdateAmmoUI()
     {
-        if (ammoText != null)
+        // Update current ammo display
+        if (currentAmmoText != null)
         {
-            ammoText.text = $"Ammo: {currentAmmo}/{maxAmmo}";
+            currentAmmoText.text = $"{currentAmmo}";
+        }
+
+        // Update max ammo display
+        if (maxAmmoText != null)
+        {
+            maxAmmoText.text = $"{maxAmmo}";
         }
     }
 
@@ -93,7 +101,7 @@ public class PlayerShooting : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = $"Score: {score}";
+            scoreText.text = $"Points: {score}";
         }
     }
 }

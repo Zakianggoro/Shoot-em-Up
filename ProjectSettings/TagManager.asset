@@ -7,6 +7,7 @@ TagManager:
   - 'PlayerHealthArea '
   - PlayerBase
   - Enemy
+  - Bullet
   layers:
   - Default
   - TransparentFX
